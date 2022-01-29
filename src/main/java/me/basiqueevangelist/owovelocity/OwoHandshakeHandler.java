@@ -11,13 +11,10 @@ import com.velocitypowered.api.event.player.ServerLoginPluginMessageEvent;
 import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.api.proxy.LoginPhaseConnection;
 import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
-import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 
 import java.util.concurrent.TimeUnit;
 
 public class OwoHandshakeHandler {
-    private static final ChannelIdentifier HANDSHAKE_ID = MinecraftChannelIdentifier.create("owo", "handshake");
 
     private final Cache<String, byte[]> handshakesPreLogin = CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.SECONDS).build();
     private final Cache<Player, byte[]> handshakes = CacheBuilder.newBuilder().weakKeys().build();
@@ -30,7 +27,7 @@ public class OwoHandshakeHandler {
 
         LoginPhaseConnection conn = (LoginPhaseConnection) event.getConnection();
 
-        conn.sendLoginPluginMessage(HANDSHAKE_ID, new byte[0], responseBody -> {
+        conn.sendLoginPluginMessage(OwoVelocityPlugin.HANDSHAKE_ID, new byte[0], responseBody -> {
             if (responseBody == null) return;
 
             handshakesPreLogin.put(event.getUsername(), responseBody.clone());
@@ -47,7 +44,7 @@ public class OwoHandshakeHandler {
 
     @Subscribe
     public void onServerLoginPluginMessage(ServerLoginPluginMessageEvent event) {
-        if (event.getIdentifier().equals(HANDSHAKE_ID)) {
+        if (event.getIdentifier().equals(OwoVelocityPlugin.HANDSHAKE_ID)) {
             byte[] hs = handshakes.getIfPresent(event.getConnection().getPlayer());
             if (hs != null) {
                 event.setResult(ServerLoginPluginMessageEvent.ResponseResult.reply(hs));
