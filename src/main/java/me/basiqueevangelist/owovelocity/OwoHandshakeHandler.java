@@ -8,6 +8,7 @@ import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
 import com.velocitypowered.api.event.connection.PreLoginEvent;
 import com.velocitypowered.api.event.player.ServerLoginPluginMessageEvent;
+import com.velocitypowered.api.network.ProtocolVersion;
 import com.velocitypowered.api.proxy.LoginPhaseConnection;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
@@ -24,6 +25,8 @@ public class OwoHandshakeHandler {
     @Subscribe(order = PostOrder.LAST)
     public void onPreLogin(PreLoginEvent event) {
         if (!event.getResult().isAllowed()) return;
+
+        if (event.getConnection().getProtocolVersion().compareTo(ProtocolVersion.MINECRAFT_1_13) < 0) return;
 
         LoginPhaseConnection conn = (LoginPhaseConnection) event.getConnection();
 
