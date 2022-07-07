@@ -11,7 +11,7 @@ import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 @Plugin(
     id = "owo-velocity",
     name = "oωo Velocity Plugin",
-    version = "0.1.0",
+    version = "0.1.1",
     authors = {"BasiqueEvangelist"}
 )
 public class OwoVelocityPlugin {

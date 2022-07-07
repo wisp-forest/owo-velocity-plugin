@@ -27,7 +27,7 @@ public class OwoHandshakeHandler {
 
         LoginPhaseConnection conn = (LoginPhaseConnection) event.getConnection();
 
-        conn.sendLoginPluginMessage(OwoVelocityPlugin.HANDSHAKE_ID, new byte[0], responseBody -> {
+        conn.sendLoginPluginMessage(OwoVelocityPlugin.HANDSHAKE_ID, new byte[1], responseBody -> {
             if (responseBody == null) return;
 
             handshakesPreLogin.put(event.getUsername(), responseBody.clone());
